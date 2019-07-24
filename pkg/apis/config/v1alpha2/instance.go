@@ -37,13 +37,14 @@ type Instance struct {
 	Spec InstanceSpec `json:"spec"`
 }
 
+// GetSpecMessage gets the Instance in the Instance Spec
 func (is *Instance) GetSpecMessage() proto.Message {
 	return &is.Spec.Instance
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// InstanceList is a list of InstanceList resources
+// InstanceList is a list of Instance resources
 type InstanceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
@@ -51,7 +52,7 @@ type InstanceList struct {
 	Items []Instance `json:"items"`
 }
 
-// DestinationRuleSpec is a wrapper around Istio DestinationRule
+// InstanceSpec is a wrapper around Istio Instance
 type InstanceSpec struct {
 	istiov1alpha2.Instance
 }
