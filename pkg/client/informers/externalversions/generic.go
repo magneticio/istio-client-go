@@ -62,9 +62,9 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	case v1alpha1.SchemeGroupVersion.WithResource("policies"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Authentication().V1alpha1().Policies().Informer()}, nil
 
-		// Group=authentication.istio.io, Version=v1alpha2
+		// Group=config.istio.io, Version=v1alpha2
 	case v1alpha2.SchemeGroupVersion.WithResource("instances"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Authentication().V1alpha2().Instances().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Config().V1alpha2().Instances().Informer()}, nil
 
 		// Group=networking.istio.io, Version=v1alpha3
 	case v1alpha3.SchemeGroupVersion.WithResource("destinationrules"):

@@ -57,7 +57,7 @@ type instances struct {
 }
 
 // newInstances returns a Instances
-func newInstances(c *AuthenticationV1alpha2Client, namespace string) *instances {
+func newInstances(c *ConfigV1alpha2Client, namespace string) *instances {
 	return &instances{
 		client: c.RESTClient(),
 		ns:     namespace,

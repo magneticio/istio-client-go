@@ -22,7 +22,7 @@ package fake
 
 import (
 	authenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/apis/authentication/v1alpha1"
-	authenticationv1alpha2 "github.com/magneticio/istio-client-go/pkg/apis/config/v1alpha2"
+	configv1alpha2 "github.com/magneticio/istio-client-go/pkg/apis/config/v1alpha2"
 	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -36,7 +36,7 @@ var codecs = serializer.NewCodecFactory(scheme)
 var parameterCodec = runtime.NewParameterCodec(scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
 	authenticationv1alpha1.AddToScheme,
-	authenticationv1alpha2.AddToScheme,
+	configv1alpha2.AddToScheme,
 	networkingv1alpha3.AddToScheme,
 }
 

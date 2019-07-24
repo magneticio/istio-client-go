@@ -63,13 +63,13 @@ func NewFilteredInstanceInformer(client versioned.Interface, namespace string, r
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.AuthenticationV1alpha2().Instances(namespace).List(options)
+				return client.ConfigV1alpha2().Instances(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.AuthenticationV1alpha2().Instances(namespace).Watch(options)
+				return client.ConfigV1alpha2().Instances(namespace).Watch(options)
 			},
 		},
 		&configv1alpha2.Instance{},

@@ -177,7 +177,7 @@ type SharedInformerFactory interface {
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
 	Authentication() authentication.Interface
-	Authentication() config.Interface
+	Config() config.Interface
 	Networking() networking.Interface
 }
 
@@ -185,7 +185,7 @@ func (f *sharedInformerFactory) Authentication() authentication.Interface {
 	return authentication.New(f, f.namespace, f.tweakListOptions)
 }
 
-func (f *sharedInformerFactory) Authentication() config.Interface {
+func (f *sharedInformerFactory) Config() config.Interface {
 	return config.New(f, f.namespace, f.tweakListOptions)
 }
 
