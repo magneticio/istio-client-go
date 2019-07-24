@@ -27,6 +27,7 @@ import (
 
 	versioned "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	authentication "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/authentication"
+	config "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/config"
 	internalinterfaces "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/internalinterfaces"
 	networking "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/networking"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -176,11 +177,16 @@ type SharedInformerFactory interface {
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
 	Authentication() authentication.Interface
+	Authentication() config.Interface
 	Networking() networking.Interface
 }
 
 func (f *sharedInformerFactory) Authentication() authentication.Interface {
 	return authentication.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Authentication() config.Interface {
+	return config.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Networking() networking.Interface {

@@ -24,6 +24,7 @@ import (
 	"fmt"
 
 	v1alpha1 "github.com/magneticio/istio-client-go/pkg/apis/authentication/v1alpha1"
+	v1alpha2 "github.com/magneticio/istio-client-go/pkg/apis/config/v1alpha2"
 	v1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
@@ -60,6 +61,10 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Authentication().V1alpha1().MeshPolicies().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("policies"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Authentication().V1alpha1().Policies().Informer()}, nil
+
+		// Group=authentication.istio.io, Version=v1alpha2
+	case v1alpha2.SchemeGroupVersion.WithResource("instances"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Authentication().V1alpha2().Instances().Informer()}, nil
 
 		// Group=networking.istio.io, Version=v1alpha3
 	case v1alpha3.SchemeGroupVersion.WithResource("destinationrules"):
