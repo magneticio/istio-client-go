@@ -24,6 +24,8 @@ import (
 	clientset "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	authenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/authentication/v1alpha1"
 	fakeauthenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/authentication/v1alpha1/fake"
+	authenticationv1alpha2 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/config/v1alpha2"
+	fakeauthenticationv1alpha2 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/config/v1alpha2/fake"
 	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/networking/v1alpha3"
 	fakenetworkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/networking/v1alpha3/fake"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -83,6 +85,11 @@ var _ clientset.Interface = &Clientset{}
 // AuthenticationV1alpha1 retrieves the AuthenticationV1alpha1Client
 func (c *Clientset) AuthenticationV1alpha1() authenticationv1alpha1.AuthenticationV1alpha1Interface {
 	return &fakeauthenticationv1alpha1.FakeAuthenticationV1alpha1{Fake: &c.Fake}
+}
+
+// AuthenticationV1alpha2 retrieves the AuthenticationV1alpha2Client
+func (c *Clientset) AuthenticationV1alpha2() authenticationv1alpha2.AuthenticationV1alpha2Interface {
+	return &fakeauthenticationv1alpha2.FakeAuthenticationV1alpha2{Fake: &c.Fake}
 }
 
 // NetworkingV1alpha3 retrieves the NetworkingV1alpha3Client
