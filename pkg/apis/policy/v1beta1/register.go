@@ -12,18 +12,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1alpha2
+package v1beta1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/magneticio/istio-client-go/pkg/apis/config"
+	policycontroller "github.com/magneticio/istio-client-go/pkg/apis/policy"
 )
 
 // SchemeGroupVersion is group version used to register these objects
-var SchemeGroupVersion = schema.GroupVersion{Group: configcontroller.GroupName, Version: "v1alpha2"}
+var SchemeGroupVersion = schema.GroupVersion{Group: policycontroller.GroupName, Version: "v1beta1"}
 
 // Kind takes an unqualified kind and returns back a Group qualified GroupKind
 func Kind(kind string) schema.GroupKind {

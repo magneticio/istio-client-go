@@ -22,8 +22,8 @@ package fake
 
 import (
 	authenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/apis/authentication/v1alpha1"
-	configv1alpha2 "github.com/magneticio/istio-client-go/pkg/apis/config/v1alpha2"
 	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
+	policyv1beta1 "github.com/magneticio/istio-client-go/pkg/apis/policy/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -36,8 +36,8 @@ var codecs = serializer.NewCodecFactory(scheme)
 var parameterCodec = runtime.NewParameterCodec(scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
 	authenticationv1alpha1.AddToScheme,
-	configv1alpha2.AddToScheme,
 	networkingv1alpha3.AddToScheme,
+	policyv1beta1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

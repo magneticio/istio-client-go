@@ -21,7 +21,7 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha2 "github.com/magneticio/istio-client-go/pkg/apis/config/v1alpha2"
+	v1beta1 "github.com/magneticio/istio-client-go/pkg/apis/policy/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -32,29 +32,29 @@ import (
 
 // FakeInstances implements InstanceInterface
 type FakeInstances struct {
-	Fake *FakeConfigV1alpha2
+	Fake *FakePolicyV1beta1
 	ns   string
 }
 
-var instancesResource = schema.GroupVersionResource{Group: "config.istio.io", Version: "v1alpha2", Resource: "instances"}
+var instancesResource = schema.GroupVersionResource{Group: "policy.istio.io", Version: "v1beta1", Resource: "instances"}
 
-var instancesKind = schema.GroupVersionKind{Group: "config.istio.io", Version: "v1alpha2", Kind: "Instance"}
+var instancesKind = schema.GroupVersionKind{Group: "policy.istio.io", Version: "v1beta1", Kind: "Instance"}
 
 // Get takes name of the instance, and returns the corresponding instance object, and an error if there is any.
-func (c *FakeInstances) Get(name string, options v1.GetOptions) (result *v1alpha2.Instance, err error) {
+func (c *FakeInstances) Get(name string, options v1.GetOptions) (result *v1beta1.Instance, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(instancesResource, c.ns, name), &v1alpha2.Instance{})
+		Invokes(testing.NewGetAction(instancesResource, c.ns, name), &v1beta1.Instance{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha2.Instance), err
+	return obj.(*v1beta1.Instance), err
 }
 
 // List takes label and field selectors, and returns the list of Instances that match those selectors.
-func (c *FakeInstances) List(opts v1.ListOptions) (result *v1alpha2.InstanceList, err error) {
+func (c *FakeInstances) List(opts v1.ListOptions) (result *v1beta1.InstanceList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(instancesResource, instancesKind, c.ns, opts), &v1alpha2.InstanceList{})
+		Invokes(testing.NewListAction(instancesResource, instancesKind, c.ns, opts), &v1beta1.InstanceList{})
 
 	if obj == nil {
 		return nil, err
@@ -64,8 +64,8 @@ func (c *FakeInstances) List(opts v1.ListOptions) (result *v1alpha2.InstanceList
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha2.InstanceList{ListMeta: obj.(*v1alpha2.InstanceList).ListMeta}
-	for _, item := range obj.(*v1alpha2.InstanceList).Items {
+	list := &v1beta1.InstanceList{ListMeta: obj.(*v1beta1.InstanceList).ListMeta}
+	for _, item := range obj.(*v1beta1.InstanceList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -81,31 +81,31 @@ func (c *FakeInstances) Watch(opts v1.ListOptions) (watch.Interface, error) {
 }
 
 // Create takes the representation of a instance and creates it.  Returns the server's representation of the instance, and an error, if there is any.
-func (c *FakeInstances) Create(instance *v1alpha2.Instance) (result *v1alpha2.Instance, err error) {
+func (c *FakeInstances) Create(instance *v1beta1.Instance) (result *v1beta1.Instance, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(instancesResource, c.ns, instance), &v1alpha2.Instance{})
+		Invokes(testing.NewCreateAction(instancesResource, c.ns, instance), &v1beta1.Instance{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha2.Instance), err
+	return obj.(*v1beta1.Instance), err
 }
 
 // Update takes the representation of a instance and updates it. Returns the server's representation of the instance, and an error, if there is any.
-func (c *FakeInstances) Update(instance *v1alpha2.Instance) (result *v1alpha2.Instance, err error) {
+func (c *FakeInstances) Update(instance *v1beta1.Instance) (result *v1beta1.Instance, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(instancesResource, c.ns, instance), &v1alpha2.Instance{})
+		Invokes(testing.NewUpdateAction(instancesResource, c.ns, instance), &v1beta1.Instance{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha2.Instance), err
+	return obj.(*v1beta1.Instance), err
 }
 
 // Delete takes name of the instance and deletes it. Returns an error if one occurs.
 func (c *FakeInstances) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(instancesResource, c.ns, name), &v1alpha2.Instance{})
+		Invokes(testing.NewDeleteAction(instancesResource, c.ns, name), &v1beta1.Instance{})
 
 	return err
 }
@@ -114,17 +114,17 @@ func (c *FakeInstances) Delete(name string, options *v1.DeleteOptions) error {
 func (c *FakeInstances) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(instancesResource, c.ns, listOptions)
 
-	_, err := c.Fake.Invokes(action, &v1alpha2.InstanceList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.InstanceList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched instance.
-func (c *FakeInstances) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1alpha2.Instance, err error) {
+func (c *FakeInstances) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.Instance, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(instancesResource, c.ns, name, pt, data, subresources...), &v1alpha2.Instance{})
+		Invokes(testing.NewPatchSubresourceAction(instancesResource, c.ns, name, pt, data, subresources...), &v1beta1.Instance{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha2.Instance), err
+	return obj.(*v1beta1.Instance), err
 }

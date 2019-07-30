@@ -15,5 +15,5 @@ limitations under the License.
 package configcontroller
 
 const (
-	GroupName = "config.istio.io"
+	GroupName = "policy.istio.io"
 )

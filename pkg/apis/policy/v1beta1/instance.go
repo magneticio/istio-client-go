@@ -12,7 +12,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1alpha2
+package v1beta1
 
 import (
 	"bufio"
@@ -21,7 +21,7 @@ import (
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
-	istiov1alpha2 "istio.io/api/pkg/kube/apis/config/v1alpha2"
+	istiov1beta1 "istio.io/api/policy/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -54,7 +54,7 @@ type InstanceList struct {
 
 // InstanceSpec is a wrapper around Istio Instance
 type InstanceSpec struct {
-	istiov1alpha2.Instance
+	istiov1beta1.Instance
 }
 
 // Adapted from https://github.com/michaelkipper/istio-client-go/commit/7c8e95b5d9220d47c107bb6f3b0b71fbc8af3ef7#diff-1c6fa6bfc320013a249f4b6d0ccdd928R65
