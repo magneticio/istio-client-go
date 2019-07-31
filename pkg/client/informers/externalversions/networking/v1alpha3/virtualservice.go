@@ -23,7 +23,7 @@ package v1alpha3
 import (
 	time "time"
 
-	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
+	networking_v1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
 	versioned "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	internalinterfaces "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha3 "github.com/magneticio/istio-client-go/pkg/client/listers/networking/v1alpha3"
@@ -72,7 +72,7 @@ func NewFilteredVirtualServiceInformer(client versioned.Interface, namespace str
 				return client.NetworkingV1alpha3().VirtualServices(namespace).Watch(options)
 			},
 		},
-		&networkingv1alpha3.VirtualService{},
+		&networking_v1alpha3.VirtualService{},
 		resyncPeriod,
 		indexers,
 	)
@@ -83,7 +83,7 @@ func (f *virtualServiceInformer) defaultInformer(client versioned.Interface, res
 }
 
 func (f *virtualServiceInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&networkingv1alpha3.VirtualService{}, f.defaultInformer)
+	return f.factory.InformerFor(&networking_v1alpha3.VirtualService{}, f.defaultInformer)
 }
 
 func (f *virtualServiceInformer) Lister() v1alpha3.VirtualServiceLister {

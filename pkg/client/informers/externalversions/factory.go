@@ -27,9 +27,9 @@ import (
 
 	versioned "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	authentication "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/authentication"
+	config "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/config"
 	internalinterfaces "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/internalinterfaces"
 	networking "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/networking"
-	policy "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/policy"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -177,18 +177,18 @@ type SharedInformerFactory interface {
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
 	Authentication() authentication.Interface
+	Config() config.Interface
 	Networking() networking.Interface
-	Policy() policy.Interface
 }
 
 func (f *sharedInformerFactory) Authentication() authentication.Interface {
 	return authentication.New(f, f.namespace, f.tweakListOptions)
 }
 
-func (f *sharedInformerFactory) Networking() networking.Interface {
-	return networking.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Config() config.Interface {
+	return config.New(f, f.namespace, f.tweakListOptions)
 }
 
-func (f *sharedInformerFactory) Policy() policy.Interface {
-	return policy.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Networking() networking.Interface {
+	return networking.New(f, f.namespace, f.tweakListOptions)
 }

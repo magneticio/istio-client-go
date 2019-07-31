@@ -24,10 +24,10 @@ import (
 	clientset "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	authenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/authentication/v1alpha1"
 	fakeauthenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/authentication/v1alpha1/fake"
+	configv1alpha2 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/config/v1alpha2"
+	fakeconfigv1alpha2 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/config/v1alpha2/fake"
 	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/networking/v1alpha3"
 	fakenetworkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/networking/v1alpha3/fake"
-	policyv1beta1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/policy/v1beta1"
-	fakepolicyv1beta1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/policy/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -47,7 +47,7 @@ func NewSimpleClientset(objects ...runtime.Object) *Clientset {
 		}
 	}
 
-	cs := &Clientset{tracker: o}
+	cs := &Clientset{}
 	cs.discovery = &fakediscovery.FakeDiscovery{Fake: &cs.Fake}
 	cs.AddReactor("*", "*", testing.ObjectReaction(o))
 	cs.AddWatchReactor("*", func(action testing.Action) (handled bool, ret watch.Interface, err error) {
@@ -69,15 +69,10 @@ func NewSimpleClientset(objects ...runtime.Object) *Clientset {
 type Clientset struct {
 	testing.Fake
 	discovery *fakediscovery.FakeDiscovery
-	tracker   testing.ObjectTracker
 }
 
 func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 	return c.discovery
-}
-
-func (c *Clientset) Tracker() testing.ObjectTracker {
-	return c.tracker
 }
 
 var _ clientset.Interface = &Clientset{}
@@ -87,12 +82,27 @@ func (c *Clientset) AuthenticationV1alpha1() authenticationv1alpha1.Authenticati
 	return &fakeauthenticationv1alpha1.FakeAuthenticationV1alpha1{Fake: &c.Fake}
 }
 
+// Authentication retrieves the AuthenticationV1alpha1Client
+func (c *Clientset) Authentication() authenticationv1alpha1.AuthenticationV1alpha1Interface {
+	return &fakeauthenticationv1alpha1.FakeAuthenticationV1alpha1{Fake: &c.Fake}
+}
+
+// ConfigV1alpha2 retrieves the ConfigV1alpha2Client
+func (c *Clientset) ConfigV1alpha2() configv1alpha2.ConfigV1alpha2Interface {
+	return &fakeconfigv1alpha2.FakeConfigV1alpha2{Fake: &c.Fake}
+}
+
+// Config retrieves the ConfigV1alpha2Client
+func (c *Clientset) Config() configv1alpha2.ConfigV1alpha2Interface {
+	return &fakeconfigv1alpha2.FakeConfigV1alpha2{Fake: &c.Fake}
+}
+
 // NetworkingV1alpha3 retrieves the NetworkingV1alpha3Client
 func (c *Clientset) NetworkingV1alpha3() networkingv1alpha3.NetworkingV1alpha3Interface {
 	return &fakenetworkingv1alpha3.FakeNetworkingV1alpha3{Fake: &c.Fake}
 }
 
-// PolicyV1beta1 retrieves the PolicyV1beta1Client
-func (c *Clientset) PolicyV1beta1() policyv1beta1.PolicyV1beta1Interface {
-	return &fakepolicyv1beta1.FakePolicyV1beta1{Fake: &c.Fake}
+// Networking retrieves the NetworkingV1alpha3Client
+func (c *Clientset) Networking() networkingv1alpha3.NetworkingV1alpha3Interface {
+	return &fakenetworkingv1alpha3.FakeNetworkingV1alpha3{Fake: &c.Fake}
 }

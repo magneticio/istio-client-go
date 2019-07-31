@@ -24,8 +24,8 @@ import (
 	"fmt"
 
 	v1alpha1 "github.com/magneticio/istio-client-go/pkg/apis/authentication/v1alpha1"
+	v1alpha2 "github.com/magneticio/istio-client-go/pkg/apis/config/v1alpha2"
 	v1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
-	v1beta1 "github.com/magneticio/istio-client-go/pkg/apis/policy/v1beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -62,6 +62,10 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	case v1alpha1.SchemeGroupVersion.WithResource("policies"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Authentication().V1alpha1().Policies().Informer()}, nil
 
+		// Group=config.istio.io, Version=v1alpha2
+	case v1alpha2.SchemeGroupVersion.WithResource("instances"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Config().V1alpha2().Instances().Informer()}, nil
+
 		// Group=networking.istio.io, Version=v1alpha3
 	case v1alpha3.SchemeGroupVersion.WithResource("destinationrules"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Networking().V1alpha3().DestinationRules().Informer()}, nil
@@ -71,10 +75,6 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Networking().V1alpha3().ServiceEntries().Informer()}, nil
 	case v1alpha3.SchemeGroupVersion.WithResource("virtualservices"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Networking().V1alpha3().VirtualServices().Informer()}, nil
-
-		// Group=policy.istio.io, Version=v1beta1
-	case v1beta1.SchemeGroupVersion.WithResource("instances"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Policy().V1beta1().Instances().Informer()}, nil
 
 	}
 

@@ -11,14 +11,14 @@ endif
 # pkg/client is auto generated code
 # zz_generated.deepcopy.go under pkg/apis/<group>/<version>/ is also generated
 # code
-DIRS := pkg/apis/networking pkg/apis/networking/v1alpha3 pkg/apis/authentication pkg/apis/authentication/v1alpha1 pkg/apis/policy pkg/apis/policy/v1beta1
+DIRS := pkg/apis/networking pkg/apis/networking/v1alpha3 pkg/apis/authentication pkg/apis/authentication/v1alpha1 pkg/apis/policy pkg/apis/config/v1alpha2
 DEPS_ALL := $(foreach dir, $(DIRS), $(wildcard $(dir)/*.go))
 GENERATED_FILES_PATTERN := %zz_generated.deepcopy.go
 DEPS := $(filter-out $(GENERATED_FILES_PATTERN), $(DEPS_ALL))
 GENERATED_FILES := $(filter $(GENERATED_FILES_PATTERN), $(DEPS_ALL))
 BOILERPLATE := boilerplate.go.txt
 
-GROUP_VERSIONS := "networking:v1alpha3, authentication:v1alpha1, policy:v1beta1"
+GROUP_VERSIONS := "networking:v1alpha3, authentication:v1alpha1, config:v1alpha2"
 
 all: generate-code test
 

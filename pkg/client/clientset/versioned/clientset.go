@@ -21,11 +21,9 @@ limitations under the License.
 package versioned
 
 import (
-	"fmt"
-
 	authenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/authentication/v1alpha1"
+	configv1alpha2 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/config/v1alpha2"
 	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/networking/v1alpha3"
-	policyv1beta1 "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned/typed/policy/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -34,8 +32,14 @@ import (
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AuthenticationV1alpha1() authenticationv1alpha1.AuthenticationV1alpha1Interface
+	// Deprecated: please explicitly pick a version if possible.
+	Authentication() authenticationv1alpha1.AuthenticationV1alpha1Interface
+	ConfigV1alpha2() configv1alpha2.ConfigV1alpha2Interface
+	// Deprecated: please explicitly pick a version if possible.
+	Config() configv1alpha2.ConfigV1alpha2Interface
 	NetworkingV1alpha3() networkingv1alpha3.NetworkingV1alpha3Interface
-	PolicyV1beta1() policyv1beta1.PolicyV1beta1Interface
+	// Deprecated: please explicitly pick a version if possible.
+	Networking() networkingv1alpha3.NetworkingV1alpha3Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
@@ -43,8 +47,8 @@ type Interface interface {
 type Clientset struct {
 	*discovery.DiscoveryClient
 	authenticationV1alpha1 *authenticationv1alpha1.AuthenticationV1alpha1Client
+	configV1alpha2         *configv1alpha2.ConfigV1alpha2Client
 	networkingV1alpha3     *networkingv1alpha3.NetworkingV1alpha3Client
-	policyV1beta1          *policyv1beta1.PolicyV1beta1Client
 }
 
 // AuthenticationV1alpha1 retrieves the AuthenticationV1alpha1Client
@@ -52,14 +56,32 @@ func (c *Clientset) AuthenticationV1alpha1() authenticationv1alpha1.Authenticati
 	return c.authenticationV1alpha1
 }
 
+// Deprecated: Authentication retrieves the default version of AuthenticationClient.
+// Please explicitly pick a version.
+func (c *Clientset) Authentication() authenticationv1alpha1.AuthenticationV1alpha1Interface {
+	return c.authenticationV1alpha1
+}
+
+// ConfigV1alpha2 retrieves the ConfigV1alpha2Client
+func (c *Clientset) ConfigV1alpha2() configv1alpha2.ConfigV1alpha2Interface {
+	return c.configV1alpha2
+}
+
+// Deprecated: Config retrieves the default version of ConfigClient.
+// Please explicitly pick a version.
+func (c *Clientset) Config() configv1alpha2.ConfigV1alpha2Interface {
+	return c.configV1alpha2
+}
+
 // NetworkingV1alpha3 retrieves the NetworkingV1alpha3Client
 func (c *Clientset) NetworkingV1alpha3() networkingv1alpha3.NetworkingV1alpha3Interface {
 	return c.networkingV1alpha3
 }
 
-// PolicyV1beta1 retrieves the PolicyV1beta1Client
-func (c *Clientset) PolicyV1beta1() policyv1beta1.PolicyV1beta1Interface {
-	return c.policyV1beta1
+// Deprecated: Networking retrieves the default version of NetworkingClient.
+// Please explicitly pick a version.
+func (c *Clientset) Networking() networkingv1alpha3.NetworkingV1alpha3Interface {
+	return c.networkingV1alpha3
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -71,14 +93,9 @@ func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 }
 
 // NewForConfig creates a new Clientset for the given config.
-// If config's RateLimiter is not set and QPS and Burst are acceptable,
-// NewForConfig will generate a rate-limiter in configShallowCopy.
 func NewForConfig(c *rest.Config) (*Clientset, error) {
 	configShallowCopy := *c
 	if configShallowCopy.RateLimiter == nil && configShallowCopy.QPS > 0 {
-		if configShallowCopy.Burst <= 0 {
-			return nil, fmt.Errorf("Burst is required to be greater than 0 when RateLimiter is not set and QPS is set to greater than 0")
-		}
 		configShallowCopy.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(configShallowCopy.QPS, configShallowCopy.Burst)
 	}
 	var cs Clientset
@@ -87,11 +104,11 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
-	cs.networkingV1alpha3, err = networkingv1alpha3.NewForConfig(&configShallowCopy)
+	cs.configV1alpha2, err = configv1alpha2.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
-	cs.policyV1beta1, err = policyv1beta1.NewForConfig(&configShallowCopy)
+	cs.networkingV1alpha3, err = networkingv1alpha3.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -108,8 +125,8 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
 	cs.authenticationV1alpha1 = authenticationv1alpha1.NewForConfigOrDie(c)
+	cs.configV1alpha2 = configv1alpha2.NewForConfigOrDie(c)
 	cs.networkingV1alpha3 = networkingv1alpha3.NewForConfigOrDie(c)
-	cs.policyV1beta1 = policyv1beta1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -119,8 +136,8 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.authenticationV1alpha1 = authenticationv1alpha1.New(c)
+	cs.configV1alpha2 = configv1alpha2.New(c)
 	cs.networkingV1alpha3 = networkingv1alpha3.New(c)
-	cs.policyV1beta1 = policyv1beta1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

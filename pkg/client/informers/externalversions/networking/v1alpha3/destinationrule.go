@@ -23,7 +23,7 @@ package v1alpha3
 import (
 	time "time"
 
-	networkingv1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
+	networking_v1alpha3 "github.com/magneticio/istio-client-go/pkg/apis/networking/v1alpha3"
 	versioned "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	internalinterfaces "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha3 "github.com/magneticio/istio-client-go/pkg/client/listers/networking/v1alpha3"
@@ -72,7 +72,7 @@ func NewFilteredDestinationRuleInformer(client versioned.Interface, namespace st
 				return client.NetworkingV1alpha3().DestinationRules(namespace).Watch(options)
 			},
 		},
-		&networkingv1alpha3.DestinationRule{},
+		&networking_v1alpha3.DestinationRule{},
 		resyncPeriod,
 		indexers,
 	)
@@ -83,7 +83,7 @@ func (f *destinationRuleInformer) defaultInformer(client versioned.Interface, re
 }
 
 func (f *destinationRuleInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&networkingv1alpha3.DestinationRule{}, f.defaultInformer)
+	return f.factory.InformerFor(&networking_v1alpha3.DestinationRule{}, f.defaultInformer)
 }
 
 func (f *destinationRuleInformer) Lister() v1alpha3.DestinationRuleLister {

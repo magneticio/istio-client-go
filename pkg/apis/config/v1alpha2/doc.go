@@ -12,8 +12,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package configcontroller
+// +k8s:deepcopy-gen=package
 
-const (
-	GroupName = "policy.istio.io"
-)
+// Package v1alpha2 is the v1alpha2 version of the config.istio.io API.
+// +groupName=config.istio.io
+package v1alpha2

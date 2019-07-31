@@ -23,7 +23,7 @@ package v1alpha1
 import (
 	time "time"
 
-	authenticationv1alpha1 "github.com/magneticio/istio-client-go/pkg/apis/authentication/v1alpha1"
+	authentication_v1alpha1 "github.com/magneticio/istio-client-go/pkg/apis/authentication/v1alpha1"
 	versioned "github.com/magneticio/istio-client-go/pkg/client/clientset/versioned"
 	internalinterfaces "github.com/magneticio/istio-client-go/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "github.com/magneticio/istio-client-go/pkg/client/listers/authentication/v1alpha1"
@@ -72,7 +72,7 @@ func NewFilteredPolicyInformer(client versioned.Interface, namespace string, res
 				return client.AuthenticationV1alpha1().Policies(namespace).Watch(options)
 			},
 		},
-		&authenticationv1alpha1.Policy{},
+		&authentication_v1alpha1.Policy{},
 		resyncPeriod,
 		indexers,
 	)
@@ -83,7 +83,7 @@ func (f *policyInformer) defaultInformer(client versioned.Interface, resyncPerio
 }
 
 func (f *policyInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&authenticationv1alpha1.Policy{}, f.defaultInformer)
+	return f.factory.InformerFor(&authentication_v1alpha1.Policy{}, f.defaultInformer)
 }
 
 func (f *policyInformer) Lister() v1alpha1.PolicyLister {
