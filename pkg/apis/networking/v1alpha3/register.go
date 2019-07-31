@@ -19,7 +19,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/magneticio/istio-client-go/pkg/apis/networking"
+	networkingcontroller "github.com/magneticio/istio-client-go/pkg/apis/networking"
 )
 
 // SchemeGroupVersion is group version used to register these objects
@@ -52,8 +52,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&GatewayList{},
 		&ServiceEntry{},
 		&ServiceEntryList{},
-		&EnvoyFilter{},
-		&EnvoyFilterList{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil
